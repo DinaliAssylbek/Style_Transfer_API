@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
 class Menu extends StatefulWidget {
   const Menu({super.key});
@@ -8,6 +11,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  Uint8List? selectedImage;
   @override
   Widget build(BuildContext context) {
     final List<String> items = <String>['Vincent Van Gogh','Pablo Picasso','Claude Monet', 'Leonardo da Vinci'];
@@ -42,8 +46,7 @@ class _MenuState extends State<Menu> {
                 ),
                 DropdownButtonFormField(
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(borderRadius:BorderRadius.all(Radius.circular(15.0)),
-                      ),
+                      border: const OutlineInputBorder(borderRadius:BorderRadius.all(Radius.circular(15.0))),
                       filled: true,
                       hintStyle: TextStyle(color: Colors.grey[800]),
                       fillColor: Colors.white,
@@ -68,7 +71,15 @@ class _MenuState extends State<Menu> {
                       child: Text("Select A File", style: TextStyle(fontSize: 18)),
                     ),
                     IconButton(
-                      onPressed: () {}, 
+                      onPressed:  () async {
+                        var picked = await FilePicker.platform.pickFiles();
+
+                        if (picked != null && picked.files.first.bytes != null) {
+                          setState(() {
+                            selectedImage = picked.files.first.bytes; // Store selected image bytes
+                          });
+                        }
+                      }, 
                       icon: const Icon(Icons.attach_file)
                     )
                   ],
@@ -80,7 +91,15 @@ class _MenuState extends State<Menu> {
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white
                   ),
-                  child: const Center(child: Text("No Image Selected")),
+                  child: selectedImage != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Image.memory(
+                          selectedImage!,
+                          fit: BoxFit.contain, // Adjust image to fill the container
+                        ),
+                      )
+                    : const Center(child: Text("No Image Selected")),
                 )
               ],
             ),
