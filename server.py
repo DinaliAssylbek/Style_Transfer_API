@@ -15,7 +15,7 @@ CORS(app)
 
 # Load your PyTorch model
 model = Generator(3)
-model.load_state_dict(torch.load("models/vanGoghModel.pt", map_location=torch.device('cpu')))
+model.load_state_dict(torch.load("painterModels/vanGoghModel.pt", map_location=torch.device('cpu')))
 model.eval()
 
 # Define image preprocessing
