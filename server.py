@@ -3,6 +3,7 @@ import torch
 from PIL import Image
 import numpy as np
 import io
+import os
 from albumentations import Compose, Resize, HorizontalFlip, Normalize
 from albumentations.pytorch import ToTensorV2
 from model import Generator
@@ -107,4 +108,5 @@ def predict():
     return send_file(output_image, mimetype="image/png")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=False)
+    port  = int(os.environ.get("PORT", 4000))
+    app.run(host="0.0.0.0", debug=False, port=port)
