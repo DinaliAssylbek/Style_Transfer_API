@@ -108,5 +108,5 @@ def predict():
     return send_file(output_image, mimetype="image/png")
 
 if __name__ == "__main__":
-    port  = int(os.environ.get("PORT", 3987))
-    app.run(host="0.0.0.0", debug=False, port=port)
+    # port  = int(os.environ.get("PORT", 3987))
+    app.run(host="0.0.0.0", debug=False)
