@@ -85,7 +85,7 @@ def denormalize_image(tensor):
     tensor = tensor * 255.0  # Scale to [0, 255]
     return tensor.clamp(0, 255) 
 
-@app.route("/predict/VanGogh", methods=["POST"])
+@app.route("/predictVanGogh", methods=["POST"])
 def predict():
     """
     Endpoint for image prediction.
@@ -122,7 +122,7 @@ def predict():
     # Send the image back as a response
     return send_file(buffer, mimetype="image/png")
 
-@app.route("/predict/Monet", methods=["POST"])
+@app.route("/predictMonet", methods=["POST"])
 def predict():
     """
     Endpoint for image prediction.
