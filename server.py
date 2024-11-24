@@ -16,15 +16,15 @@ CORS(app)
 # Load your PyTorch models
 VanGoghModel = Generator(3)
 MonetModel = Generator(3)
-DavinciModel = Generator(3)
+MunchModel = Generator(3)
 
 VanGoghModel.load_state_dict(torch.load("painterModels/vanGoghModel.pt", map_location=torch.device('cpu'), weights_only = True))
 MonetModel.load_state_dict(torch.load("painterModels/monetModel.pt", map_location=torch.device('cpu'), weights_only = True))
-DavinciModel.load_state_dict(torch.load("painterModels/vanGoghModel.pt", map_location=torch.device('cpu'), weights_only = True))
+MunchModel.load_state_dict(torch.load("painterModels/munchModel.pt", map_location=torch.device('cpu'), weights_only = True))
 
 VanGoghModel.eval()
 MonetModel.eval()
-DavinciModel.eval()
+MunchModel.eval()
 
 # Define image preprocessing
 transforms = Compose(
@@ -142,6 +142,43 @@ def predict_Monet():
     # Perform inference
     with torch.no_grad():
         output_tensor = MonetModel(input_tensor)
+    
+    # Denormalize the output tensor
+    output_tensor = denormalize_image(output_tensor)
+    
+    # Convert the output tensor to an image
+    output_image = tensor_to_image(output_tensor)
+
+    original_width, original_height = original_dims
+    resized_image = Image.open(output_image).resize((original_width, original_height))
+
+    buffer = io.BytesIO()
+    resized_image.save(buffer, format="PNG")
+    buffer.seek(0)
+    
+    # Send the image back as a response
+    return send_file(buffer, mimetype="image/png")
+
+@app.route("/predictMunch", methods=["POST"])
+def predict_Munch():
+    """
+    Endpoint for image prediction.
+    Receives an image file, preprocesses it, runs inference, and returns an image.
+    """
+    # Check if the request has a file
+    if "file" not in request.files:
+        return {"error": "No file uploaded"}, 400
+    
+    # Read the file
+    file = request.files["file"]
+    image_bytes = file.read()
+    
+    # Preprocess the image
+    input_tensor, original_dims = preprocess_image(image_bytes)
+    
+    # Perform inference
+    with torch.no_grad():
+        output_tensor = MunchModel(input_tensor)
     
     # Denormalize the output tensor
     output_tensor = denormalize_image(output_tensor)
