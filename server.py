@@ -18,9 +18,9 @@ VanGoghModel = Generator(3)
 MonetModel = Generator(3)
 MunchModel = Generator(3)
 
-VanGoghModel.load_state_dict(torch.load("painterModels/vanGoghModel.pt", map_location=torch.device('cpu'), weights_only = True))
-MonetModel.load_state_dict(torch.load("painterModels/monetModel.pt", map_location=torch.device('cpu'), weights_only = True))
-MunchModel.load_state_dict(torch.load("painterModels/munchModel.pt", map_location=torch.device('cpu'), weights_only = True))
+VanGoghModel.load_state_dict(torch.load("Models/vanGoghModel.pt", map_location=torch.device('cpu'), weights_only = True))
+MonetModel.load_state_dict(torch.load("Models/monetModel.pt", map_location=torch.device('cpu'), weights_only = True))
+MunchModel.load_state_dict(torch.load("Models/munchModel.pt", map_location=torch.device('cpu'), weights_only = True))
 
 VanGoghModel.eval()
 MonetModel.eval()
