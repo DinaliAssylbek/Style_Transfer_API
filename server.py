@@ -6,7 +6,7 @@ import io
 import os
 from albumentations import Compose, Resize, HorizontalFlip, Normalize
 from albumentations.pytorch import ToTensorV2
-from model import Generator
+from Training.model import Generator
 from flask_cors import CORS
 
 # Initialize Flask app
